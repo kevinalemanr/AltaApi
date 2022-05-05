@@ -4,7 +4,7 @@ namespace AltaApi.UseCasesPorts
 {
     public interface ICreateHeartBeatInitiateInputPort
     {
-        Task Handle(HeartBeatInitiateCreationDTO saveToPrimeCreationDTO);
+        Task Handle(dynamic data, string applicationAccess);
 
     }
 }

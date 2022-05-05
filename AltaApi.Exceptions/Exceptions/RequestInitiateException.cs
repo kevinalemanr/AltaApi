@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿using Serilog;
 namespace AltaApi.Exceptions.Exceptions
 {
     public class RequestInitiateException: Exception
     {
         public RequestInitiateException(string Description)
         {
-            this.Data.Add("REQUEST_INITIATE_EXCEPTION", Description);
+            Log.Error("ERR_REQUEST_INITIATE_EXCEPTION", Description);
         }
 
     }

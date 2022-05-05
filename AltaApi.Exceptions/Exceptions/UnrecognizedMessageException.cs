@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿using Serilog;
 namespace AltaApi.Exceptions.Exceptions
 {
-    public class UnrecognizedMessageException: Exception
+    public class UnrecognizedMessageException : Exception
     {
-
         public UnrecognizedMessageException(string Description)
         {
-            this.Data.Add("UNRECOGNIZED_MESSAGE_EXCEPTION", Description);
+            Log.Error("UNRECOGNIZED_MESSAGE_EXCEPTION", Description);
         }
     }
 }

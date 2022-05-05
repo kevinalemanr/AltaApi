@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AltaApi.Adapters\AltaApi.Adapters.csproj" />
     <ProjectReference Include="..\AltaApi.Entities\AltaApi.Entities.csproj" />
+    <ProjectReference Include="..\AltaApi.Exceptions\AltaApi.Exceptions.csproj" />
     <ProjectReference Include="..\AltaApi.UseCasesPorts\AltaApi.UseCasesPorts.csproj" />
   </ItemGroup>
 

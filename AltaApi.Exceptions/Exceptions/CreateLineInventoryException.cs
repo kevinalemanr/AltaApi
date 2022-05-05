@@ -6,7 +6,7 @@ namespace AltaApi.Exceptions.Exceptions
     {
         public CreateLineInventoryException(string Description)
         {
-            Log.Error("CREATE_LINE_INVENTORY_EXCEPTION: {0}", Description);
+            Log.Error("ERROR_CREATE_LINE_INVENTORY_EXCEPTION: {0}", Description);
         }
     }
 }

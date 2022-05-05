@@ -5,7 +5,7 @@ namespace AltaApi.UseCasesPorts
 {
     public interface ICreateRequestInitiateInputPort
     {
-        Task Handle(RequestInitiateCreationDTO requestInitiateCreationDTO);
+        Task Handle(dynamic value, string applicationAccess);
 
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Serilog;
 
 namespace AltaApi.Exceptions.Exceptions
 {
@@ -9,7 +6,7 @@ namespace AltaApi.Exceptions.Exceptions
     {
         public LoadDetailException(string Description)
         {
-            this.Data.Add("LOAD_DETAIL_EXCEPTION", Description);
+            Log.Error("LOAD_DETAIL_EXCEPTION", Description);
         }
     }
 }

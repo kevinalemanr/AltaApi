@@ -2,6 +2,7 @@
 using AltaApi.Adapters.Folders;
 using AltaApi.DTOs;
 using AltaApi.Entities.Interfaces;
+using AltaApi.Exceptions.Exceptions;
 using AltaApi.UseCases.Helpers;
 using AltaApi.UseCasesPorts;
 using Newtonsoft.Json;
@@ -45,7 +46,7 @@ namespace AltaApi.UseCases
             }
             else
             {
-                throw new ArgumentException("UNRECOGNIZED MESSAGE ");
+                throw new UnrecognizedMessageException("UNRECOGNIZED MESSAGE ");
 
             }
 
@@ -54,105 +55,126 @@ namespace AltaApi.UseCases
 
         public async Task<dynamic> PROCESS_HEARTBEAT_CONFIRM(string data)
         {
-            var updateDBC = JsonConvert.DeserializeObject<HeartBeatConfirmAdapter>(data);
+            try
+            {
+                var updateDBC = JsonConvert.DeserializeObject<HeartBeatConfirmAdapter>(data);
 
-            HeartBeatInitiateCreationDTO newHBI = new HeartBeatInitiateCreationDTO();
-            SaveToPrimeCreationDTO newPrimeEvent = new SaveToPrimeCreationDTO();
+                HeartBeatInitiateCreationDTO newHBI = new HeartBeatInitiateCreationDTO();
+                SaveToPrimeCreationDTO newPrimeEvent = new SaveToPrimeCreationDTO();
 
 
-            newHBI.TranId = updateDBC.HeartBeatConfirm.CtrlSeg.Tranid.ToString();
-            newHBI.TranDt = updateDBC.HeartBeatConfirm.CtrlSeg.Trandt.ToString();
-            newHBI.Wcs_Id = updateDBC.HeartBeatConfirm.CtrlSeg.WcsId.ToString();
-            newHBI.Wh_Id = updateDBC.HeartBeatConfirm.CtrlSeg.WhId.ToString();
-            newHBI.ResponseTime = DateTime.Now;
-            newHBI.MessageRecived = data;
+                newHBI.TranId = updateDBC.HeartBeatConfirm.CtrlSeg.Tranid.ToString();
+                newHBI.TranDt = updateDBC.HeartBeatConfirm.CtrlSeg.Trandt.ToString();
+                newHBI.Wcs_Id = updateDBC.HeartBeatConfirm.CtrlSeg.WcsId.ToString();
+                newHBI.Wh_Id = updateDBC.HeartBeatConfirm.CtrlSeg.WhId.ToString();
+                newHBI.ResponseTime = DateTime.Now;
+                newHBI.MessageRecived = data;
 
-            newPrimeEvent.TranId = updateDBC.HeartBeatConfirm.CtrlSeg.Tranid.ToString();
-            newPrimeEvent.Data = data;
-            newPrimeEvent.Application = "PRIME - HEARTBEAT_CONFIRM";
-            newPrimeEvent.Endpoint = "SEND_MESSAGE";
+                newPrimeEvent.TranId = updateDBC.HeartBeatConfirm.CtrlSeg.Tranid.ToString();
+                newPrimeEvent.Data = data;
+                newPrimeEvent.Application = "PRIME - HEARTBEAT_CONFIRM";
+                newPrimeEvent.Endpoint = "SEND_MESSAGE";
 
-            await  _heartBeatRepository.UpdateHeartBeatInitiate(newHBI);
-            await _inventoryRepository.CreateLineInventory(newPrimeEvent);
+                await _heartBeatRepository.UpdateHeartBeatInitiate(newHBI);
+                await _inventoryRepository.CreateLineInventory(newPrimeEvent);
 
-            return updateDBC;
+                return updateDBC;
+            }
+            catch (Exception ex)
+            {
+                throw new HeartBeatConfirmException(ex.ToString());
+            }
 
         }
 
         public async Task<dynamic> PROCESS_LOAD_DETAIL(string data)
         {
-            var message = JsonConvert.DeserializeObject<LoadDetailMessageAdapter>(data);
+            try
+            {
+                var message = JsonConvert.DeserializeObject<LoadDetailMessageAdapter>(data);
 
-            RequestInitiateCreationDTO newRequest = new RequestInitiateCreationDTO();
-            SaveToPrimeCreationDTO newPrimeEvent = new SaveToPrimeCreationDTO();
-
-
-            newRequest.TranId = message.LoadDetail.CtrlSeg.Tranid.ToString();
-            newRequest.Wh_id = message.LoadDetail.CtrlSeg.WhId.ToString();
-            newRequest.Wcs_id = message.LoadDetail.CtrlSeg.WcsId.ToString();
-            newRequest.LodNum = message.LoadDetail.CtrlSeg.InvSeg.LODNUM.ToString();
-            newRequest.Apointed = 1;
-            newRequest.MessageReceived = data;
-            newRequest.LotNum = message.LoadDetail.CtrlSeg.InvSeg.LOTNUM.ToString();
-
-            newPrimeEvent.TranId = message.LoadDetail.CtrlSeg.Tranid.ToString();
-            newPrimeEvent.Data = data;
-            newPrimeEvent.Date = DateTime.Now;
-            newPrimeEvent.Application = "SEND_MESSAGE";
-            newPrimeEvent.Endpoint = "PRIME - LOAD_DETAIL"; 
+                RequestInitiateCreationDTO newRequest = new RequestInitiateCreationDTO();
+                SaveToPrimeCreationDTO newPrimeEvent = new SaveToPrimeCreationDTO();
 
 
-            await _requestInitiateRepository.UpdateRequestInitiate(newRequest);
-            await _inventoryRepository.CreateLineInventory(newPrimeEvent);
+                newRequest.TranId = message.LoadDetail.CtrlSeg.Tranid.ToString();
+                newRequest.Wh_id = message.LoadDetail.CtrlSeg.WhId.ToString();
+                newRequest.Wcs_id = message.LoadDetail.CtrlSeg.WcsId.ToString();
+                newRequest.LodNum = message.LoadDetail.CtrlSeg.InvSeg.LODNUM.ToString();
+                newRequest.Apointed = 1;
+                newRequest.MessageReceived = data;
+                newRequest.LotNum = message.LoadDetail.CtrlSeg.InvSeg.LOTNUM.ToString();
 
-            return message;
+                newPrimeEvent.TranId = message.LoadDetail.CtrlSeg.Tranid.ToString();
+                newPrimeEvent.Data = data;
+                newPrimeEvent.Date = DateTime.Now;
+                newPrimeEvent.Application = "SEND_MESSAGE";
+                newPrimeEvent.Endpoint = "PRIME - LOAD_DETAIL";
+
+
+                await _requestInitiateRepository.UpdateRequestInitiate(newRequest);
+                await _inventoryRepository.CreateLineInventory(newPrimeEvent);
+
+                return message;
+            }
+            catch (Exception ex)
+            { 
+                throw new Exception(ex.ToString());
+            }
 
         }
 
         public async Task<dynamic> PROCESS_LOAD_ERROR(string data)
         {
-            var message = JsonConvert.DeserializeObject<LoadErrorMessageAdapter>(data);
-
-            RequestInitiateCreationDTO newRequest = new RequestInitiateCreationDTO();
-            SaveToPrimeCreationDTO newPrimeEvent = new SaveToPrimeCreationDTO();
-            RequestInboxReadDTO readInbox = new RequestInboxReadDTO();
-
-
-            newRequest.TranId = message.LoadError.CtrlSeg.Tranid.ToString();
-            newRequest.Wh_id = message.LoadError.CtrlSeg.WhId.ToString();
-            newRequest.Wcs_id = message.LoadError.CtrlSeg.WcsId.ToString();
-            newRequest.LodNum = message.LoadError.CtrlSeg.LoadErrorSeg.LODNUM.ToString();
-            newRequest.Apointed = 0;
-            newRequest.MessageReceived = data;
-
-            newPrimeEvent.TranId = message.LoadError.CtrlSeg.Tranid.ToString();
-            newPrimeEvent.Data = data;
-            newPrimeEvent.Date = DateTime.Now;
-            newPrimeEvent.Application = "SEND_MESSAGE";
-            newPrimeEvent.Endpoint = "PRIME - LOAD_ERROR";
-
-            readInbox.LodNum = message.LoadError.CtrlSeg.LoadErrorSeg.LODNUM.ToString();
-
-
-            await _requestInitiateRepository.UpdateRequestInitiate(newRequest);
-            await _inventoryRepository.CreateLineInventory(newPrimeEvent);
-
-            var reProcess = await _requestInboxRepository.GetRequestInbox(readInbox);
-
-            if (reProcess.Count() >= 1)
+            try
             {
-                await Task.Delay(3000);
+                var message = JsonConvert.DeserializeObject<LoadErrorMessageAdapter>(data);
 
-                var dataToSend = reProcess.FirstOrDefault();
-                dataToSend.TranId = CreateData.GetDateTimeNowWithMiliseconds();
-                dataToSend.TranDt = CreateData.GetDateTimeNow();
-
-                await _requestInboxRepository.CreateRequestInbox(dataToSend);
+                RequestInitiateCreationDTO newRequest = new RequestInitiateCreationDTO();
+                SaveToPrimeCreationDTO newPrimeEvent = new SaveToPrimeCreationDTO();
+                RequestInboxReadDTO readInbox = new RequestInboxReadDTO();
 
 
+                newRequest.TranId = message.LoadError.CtrlSeg.Tranid.ToString();
+                newRequest.Wh_id = message.LoadError.CtrlSeg.WhId.ToString();
+                newRequest.Wcs_id = message.LoadError.CtrlSeg.WcsId.ToString();
+                newRequest.LodNum = message.LoadError.CtrlSeg.LoadErrorSeg.LODNUM.ToString();
+                newRequest.Apointed = 0;
+                newRequest.MessageReceived = data;
+
+                newPrimeEvent.TranId = message.LoadError.CtrlSeg.Tranid.ToString();
+                newPrimeEvent.Data = data;
+                newPrimeEvent.Date = DateTime.Now;
+                newPrimeEvent.Application = "SEND_MESSAGE";
+                newPrimeEvent.Endpoint = "PRIME - LOAD_ERROR";
+
+                readInbox.LodNum = message.LoadError.CtrlSeg.LoadErrorSeg.LODNUM.ToString();
+
+
+                await _requestInitiateRepository.UpdateRequestInitiate(newRequest);
+                await _inventoryRepository.CreateLineInventory(newPrimeEvent);
+
+                var reProcess = await _requestInboxRepository.GetRequestInbox(readInbox);
+
+                if (reProcess.Count() >= 1)
+                {
+                    await Task.Delay(3000);
+
+                    var dataToSend = reProcess.FirstOrDefault();
+                    dataToSend.TranId = CreateData.GetDateTimeNowWithMiliseconds();
+                    dataToSend.TranDt = CreateData.GetDateTimeNow();
+
+                    await _requestInboxRepository.CreateRequestInbox(dataToSend);
+
+
+                }
+
+                return message;
             }
-
-            return message;
+            catch (Exception ex)
+            {
+                throw new LoadErrorException(ex.ToString());
+            }
         }
     }
 }

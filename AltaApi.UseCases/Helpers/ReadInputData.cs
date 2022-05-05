@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using AltaApi.Adapters;
-using AltaApi.Adapters.Folders;
+﻿using AltaApi.Adapters.Folders;
 using Newtonsoft.Json;
 
-
-namespace AltaApi.Controllers.Helpers
+namespace AltaApi.UseCases.Helpers
 {
-    public static class ReadJSON
+    public static  class ReadInputData
     {
-        public static CreateLineInventoryAdapter  ReadInventory(string value)
+        public static CreateLineInventoryAdapter ReadInventory(string value)
         {
-           var newIline = JsonConvert.DeserializeObject<CreateLineInventoryAdapter>(value);
+            var newIline = JsonConvert.DeserializeObject<CreateLineInventoryAdapter>(value);
 
             Console.WriteLine($"TrainId : {newIline.CreateLineInventoryInIfd.CtrlSeg.Tranid}");
 
@@ -28,9 +25,9 @@ namespace AltaApi.Controllers.Helpers
         public static RequestInitiateAdapter ReadRequestInitiate(string value)
         {
             var newRI = JsonConvert.DeserializeObject<RequestInitiateAdapter>(value);
-               Console.WriteLine($"TranId: {newRI.Request.CtrlSeg.Tranid.ToString()}");
+            Console.WriteLine($"TranId: {newRI.Request.CtrlSeg.Tranid.ToString()}");
 
-            return newRI;   
+            return newRI;
         }
 
         public static MovementConfirmAdapter ReadMovementConfirm(string value)

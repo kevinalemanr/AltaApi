@@ -1,4 +1,5 @@
 ﻿using AltaApi.DTOs;
+using AltaApi.Exceptions.Exceptions;
 using AltaApi.UseCases;
 using AltaApi.WebClients.Interfaces;
 using Microsoft.AspNetCore.Mvc;
