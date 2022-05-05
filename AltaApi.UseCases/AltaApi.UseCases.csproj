@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AltaApi.Adapters\AltaApi.Adapters.csproj" />
+    <ProjectReference Include="..\AltaApi.Entities\AltaApi.Entities.csproj" />
+    <ProjectReference Include="..\AltaApi.UseCasesPorts\AltaApi.UseCasesPorts.csproj" />
+  </ItemGroup>
+
+</Project>

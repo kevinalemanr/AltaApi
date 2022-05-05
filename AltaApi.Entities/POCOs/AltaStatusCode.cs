@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AltaApi.Entities.POCOs
+{
+    public enum AltaStatusCode
+    {
+        SUCCESS = 200,
+        INFORMATION = 201,
+        INTERNAL_ERROR = 500,
+        WS_PRIME_OFFLINE = 501,
+        GCAS_BAD_FORMAT = 502,
+        LINE_NOT_FOUND_ON_TABLE = 503,
+        NO_ACTIVE_ORDER_ON_PRIME = 504,
+        GCAS_EMPTY = 505,
+        GCAS_SENSOR_1 = 506,
+        FRACIONADO = 507,
+        GENERATE_NEXT_ULID = 508,
+        TIMEOUT_TO_PROCESS = 509,
+        NOT_AUTHENTICATED_EXCEPTION = 510,
+        REQUEST_PRIME_WEB_SERVICE_EXCEPTION = 511,
+        CLEAR_ON_START_SERVICE = 512,
+        WS_EMPTY = 513,
+        MORE_THEN_ONE_ACTIVE_ORDER_ON_PRIME = 514,
+        ERROR_ON_PRINT_LABEL_REQUEST = 515,
+        GENERATE_PALLET_UMBER_EXCEPTION = 516,
+        ERROR_ON_PRINT_LABEL = 517,
+        PRINT_LABEL_SUCCESS = 518,
+        CREATE_LINE_INVENTORY_EXCEPTION = 521,
+        HEART_BEAT_EXCEPTION = 522,
+        REQUEST_INITIATE_EXCEPTION = 524,
+        MOVEMENT_CONFIRM_EXCEPTION = 525,
+        LOAD_DETAIL_EXCEPTION = 526,
+        LOAD_ERROR_EXCEPTION = 527,
+        HEART_BEAT_CONFIRM_EXCEPTION = 528,
+        UNRECOGNIZED_MESSAGE_EXCEPTION = 529
+    }
+}

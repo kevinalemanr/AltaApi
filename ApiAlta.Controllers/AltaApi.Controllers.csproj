@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AltaApi.Adapters\AltaApi.Adapters.csproj" />
+    <ProjectReference Include="..\AltaApi.Entities\AltaApi.Entities.csproj" />
+    <ProjectReference Include="..\AltaApi.UseCasesPorts\AltaApi.UseCasesPorts.csproj" />
+    <ProjectReference Include="..\AltaApi.WebClients\AltaApi.WebClients.csproj" />
+  </ItemGroup>
+
+</Project>
